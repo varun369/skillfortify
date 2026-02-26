@@ -29,8 +29,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from skillfortify.parsers.autogen import AutoGenParser
 from skillfortify.parsers.base import ParsedSkill, SkillParser
 from skillfortify.parsers.claude_skills import ClaudeSkillsParser
+from skillfortify.parsers.crewai import CrewAIParser
+from skillfortify.parsers.langchain import LangChainParser
 from skillfortify.parsers.mcp_config import McpConfigParser
 from skillfortify.parsers.openclaw import OpenClawParser
 
@@ -89,12 +92,18 @@ def default_registry() -> ParserRegistry:
     1. ``ClaudeSkillsParser`` -- Claude Code skills (.claude/skills/*.md)
     2. ``McpConfigParser`` -- MCP server configs (mcp.json, etc.)
     3. ``OpenClawParser`` -- OpenClaw skills (.claw/*.yaml)
+    4. ``LangChainParser`` -- LangChain tools (BaseTool / @tool in .py)
+    5. ``CrewAIParser`` -- CrewAI tools (crew.yaml + BaseTool in .py)
+    6. ``AutoGenParser`` -- AutoGen tools (register_for_llm / schemas)
 
     Returns:
-        A ParserRegistry with all three built-in parsers registered.
+        A ParserRegistry with all six built-in parsers registered.
     """
     registry = ParserRegistry()
     registry.register(ClaudeSkillsParser())
     registry.register(McpConfigParser())
     registry.register(OpenClawParser())
+    registry.register(LangChainParser())
+    registry.register(CrewAIParser())
+    registry.register(AutoGenParser())
     return registry
