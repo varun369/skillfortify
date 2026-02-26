@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "skillfortify"
+version = "0.1.0"
+description = "SkillFortify — Formal verification and supply chain security for agentic AI skills"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Varun Pratap Bhardwaj", email = "varun.pratap.bhardwaj@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "click>=8.1",
+    "rich>=13.0",
+    "cyclonedx-python-lib>=7.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+sat = [
+    "python-sat>=0.1.8.dev1",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "hypothesis>=6.0",
+    "ruff>=0.9",
+]
+
+[project.scripts]
+skillfortify = "skillfortify.cli.main:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/skillfortify"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
