@@ -4,6 +4,15 @@ All notable changes to SkillFortify are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-02-26
+
+### Added
+- LangChain tools format support (BaseTool subclasses, @tool decorators)
+- CrewAI tools format support (crew.yaml definitions, tool classes)
+- AutoGen tools format support (register_for_llm, function schemas)
+- Six agent frameworks now supported (up from three)
+- 69 new parser tests (675 total)
+
 ## [0.1.0] - 2026-02-26
 
 ### Added

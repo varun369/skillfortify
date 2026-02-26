@@ -142,13 +142,16 @@ skillfortify sbom ./my-agent-project --project-name "prod-agent" --project-versi
 
 ## Supported Formats
 
-SkillFortify auto-detects and analyzes skills across the three major agent skill ecosystems:
+SkillFortify auto-detects and analyzes skills across six major agent frameworks:
 
 | Format | Detected From | Skill Location |
 |--------|---------------|----------------|
 | **Claude Code Skills** | `.claude/` directory | `.claude/skills/*.md` |
 | **MCP Servers** | `mcp.json` or `mcp_config.json` | Server configurations |
 | **OpenClaw Skills** | `.claw/` directory | `.claw/**/*` |
+| **LangChain Tools** | `langchain` imports in `.py` | `BaseTool` subclasses, `@tool` decorators |
+| **CrewAI Tools** | `crew.yaml` or `crewai` imports | Crew definitions + tool classes |
+| **AutoGen Tools** | `autogen` imports in `.py` | `register_for_llm` decorators, function schemas |
 
 All formats are parsed into a unified representation for consistent analysis, trust scoring, and SBOM generation.
 
