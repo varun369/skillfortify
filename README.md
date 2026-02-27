@@ -253,7 +253,7 @@ SkillFortify is backed by peer-reviewed research with five formal theorems and f
 
 **[Read the paper on Zenodo →](https://doi.org/10.5281/zenodo.18787663)** | DOI: 10.5281/zenodo.18787663
 
-Part of the **AgentAssert** suite — building the formal foundations for trustworthy AI agents.
+Part of the **AgentAssert** suite ([arXiv:2602.22302](https://arxiv.org/abs/2602.22302)) — building the formal foundations for trustworthy AI agents.
 
 ---
 
@@ -262,7 +262,7 @@ Part of the **AgentAssert** suite — building the formal foundations for trustw
 **Varun Pratap Bhardwaj** — Solution Architect with 15+ years in enterprise technology. Dual qualifications in technology and law (LL.B.), with a focus on formal methods for AI safety and regulatory compliance for autonomous systems.
 
 - **Research:** Formal methods for AI agent safety, behavioral contracts, supply chain security
-- **Prior work:** [AgentAssert](https://zenodo.org/records/18775393) (design-by-contract for AI agents), SuperLocalMemory (privacy-preserving agent memory)
+- **Prior work:** [AgentAssert](https://arxiv.org/abs/2602.22302) (design-by-contract for AI agents, [Zenodo](https://zenodo.org/records/18775393)), SuperLocalMemory (privacy-preserving agent memory)
 - **Contact:** varun.pratap.bhardwaj@gmail.com
 - **ORCID:** [0009-0002-8726-4289](https://orcid.org/0009-0002-8726-4289)
 
