@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "skillfortify"
-version = "0.3.0"
+version = "0.3.1"
 description = "SkillFortify — Supply chain security scanner for AI agent skills. Supports 22 frameworks."
 readme = "README.md"
 requires-python = ">=3.11"
