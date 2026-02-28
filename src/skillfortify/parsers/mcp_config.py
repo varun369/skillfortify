@@ -51,7 +51,17 @@ from pathlib import Path
 from skillfortify.parsers.base import ParsedSkill, SkillParser
 
 # MCP config filenames to probe, in priority order.
-_MCP_CONFIG_FILENAMES = ("mcp.json", ".mcp.json", "claude_desktop_config.json")
+_MCP_CONFIG_FILENAMES = (
+    "mcp.json",
+    "mcp_servers.json",
+    "mcp_settings.json",
+    "mcp_config.json",
+    ".mcp.json",
+    "claude_desktop_config.json",
+)
+
+# Top-level keys that contain server maps across different MCP clients.
+_MCP_SERVER_KEYS = ("mcpServers", "mcp", "servers")
 
 
 def _extract_npm_packages(args: list[str]) -> list[str]:
@@ -109,24 +119,29 @@ class McpConfigParser(SkillParser):
         return False
 
     def parse(self, path: Path) -> list[ParsedSkill]:
-        """Parse all MCP server entries from the configuration file.
+        """Parse all MCP server entries from ALL configuration files.
 
-        Tries each known config filename in order and parses the first one
-        found. If multiple config files exist, only the highest-priority
-        one is parsed (matching the MCP client resolution order).
+        Scans every known config filename and aggregates servers from all
+        files found. Deduplicates by server name so the same MCP server
+        declared in multiple config files is only reported once.
 
         Args:
-            path: Root directory containing the MCP config file.
+            path: Root directory containing MCP config file(s).
 
         Returns:
-            List of ParsedSkill instances, one per MCP server entry.
-            Empty if no config found or config is malformed.
+            List of ParsedSkill instances, one per unique MCP server.
+            Empty if no config found or all configs are malformed.
         """
+        results: list[ParsedSkill] = []
+        seen_names: set[str] = set()
         for filename in _MCP_CONFIG_FILENAMES:
             config_file = path / filename
             if config_file.is_file():
-                return self._parse_config(config_file)
-        return []
+                for skill in self._parse_config(config_file):
+                    if skill.name not in seen_names:
+                        seen_names.add(skill.name)
+                        results.append(skill)
+        return results
 
     def _parse_config(self, config_path: Path) -> list[ParsedSkill]:
         """Parse a single MCP configuration file.
@@ -143,8 +158,12 @@ class McpConfigParser(SkillParser):
         except (OSError, json.JSONDecodeError):
             return []
 
-        servers = data.get("mcpServers", {})
-        if not isinstance(servers, dict):
+        servers: dict = {}
+        for key in _MCP_SERVER_KEYS:
+            candidate = data.get(key, {})
+            if isinstance(candidate, dict) and candidate:
+                servers.update(candidate)
+        if not servers:
             return []
 
         results: list[ParsedSkill] = []

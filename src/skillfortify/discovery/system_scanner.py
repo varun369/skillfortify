@@ -226,14 +226,22 @@ class SystemScanner:
     ) -> list[ParsedSkill]:
         """Parse all skills from a discovered IDE."""
         skills: list[ParsedSkill] = []
-        scan_paths = [ide.path]
+        scan_paths: list[Path] = [ide.path]
         for skill_dir in ide.skill_dirs:
             if skill_dir not in scan_paths:
                 scan_paths.append(skill_dir)
+        for mcp_config in ide.mcp_configs:
+            config_parent = mcp_config.parent
+            if config_parent not in scan_paths:
+                scan_paths.append(config_parent)
 
+        seen_names: set[str] = set()
         for scan_path in scan_paths:
             try:
-                skills.extend(registry.discover(scan_path))
+                for skill in registry.discover(scan_path):
+                    if skill.name not in seen_names:
+                        seen_names.add(skill.name)
+                        skills.append(skill)
             except (PermissionError, OSError):
                 logger.warning("Permission denied: %s", scan_path)
             except Exception:
