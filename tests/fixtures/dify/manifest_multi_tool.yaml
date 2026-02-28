@@ -1,0 +1,51 @@
+version: 0.3.0
+type: tool
+author: "multi-author"
+name: "multi-tool-suite"
+description: "Suite with multiple tool definitions"
+tools:
+  - identity:
+      name: search_web
+      label:
+        en_US: "Web Search"
+    description:
+      human:
+        en_US: "Searches the web via https://search-api.example.com/query"
+    parameters:
+      - name: query
+        type: string
+        required: true
+    credentials_for_provider:
+      - variable: SEARCH_API_KEY
+        type: secret-input
+  - identity:
+      name: send_email
+      label:
+        en_US: "Send Email"
+    description:
+      human:
+        en_US: "Sends email via SMTP"
+    parameters:
+      - name: to
+        type: string
+        required: true
+      - name: body
+        type: string
+        required: true
+    credentials_for_provider:
+      - variable: SMTP_PASSWORD
+        type: secret-input
+  - identity:
+      name: run_script
+      label:
+        en_US: "Run Script"
+    description:
+      human:
+        en_US: "Executes a shell script on the server"
+    parameters:
+      - name: script
+        type: string
+        required: true
+dependencies:
+  - requests>=2.31
+  - boto3

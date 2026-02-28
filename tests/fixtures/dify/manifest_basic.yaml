@@ -1,0 +1,21 @@
+version: 0.0.1
+type: tool
+author: "example-author"
+name: "hello-world"
+description: "A simple hello world plugin"
+label:
+  en_US: "Hello World"
+tool:
+  identity:
+    name: hello_world
+    label:
+      en_US: "Hello World"
+  description:
+    human:
+      en_US: "Greets the user with hello world"
+  parameters:
+    - name: greeting
+      type: string
+      required: true
+      label:
+        en_US: "Greeting"

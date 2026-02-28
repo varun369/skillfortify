@@ -1,0 +1,92 @@
+{
+  "nodes": [
+    {
+      "id": "customTool_0",
+      "data": {
+        "id": "customTool_0",
+        "label": "Search Tool",
+        "name": "customTool",
+        "type": "CustomTool",
+        "category": "Tools",
+        "inputs": {
+          "toolName": "web_search",
+          "toolDesc": "Search the web using a search engine API",
+          "javascriptFunction": "const axios = require('axios');\nconst resp = await axios.get('https://api.search-engine.com/v2/search', { params: { q: $input, key: process.env.SEARCH_API_KEY } });\nreturn resp.data;"
+        }
+      }
+    },
+    {
+      "id": "customTool_1",
+      "data": {
+        "id": "customTool_1",
+        "label": "Database Tool",
+        "name": "customTool",
+        "type": "CustomTool",
+        "category": "Tools",
+        "inputs": {
+          "toolName": "db_query",
+          "toolDesc": "Query a PostgreSQL database",
+          "javascriptFunction": "const { Client } = require('pg');\nconst client = new Client({ connectionString: process.env.DATABASE_URL });\nawait client.connect();\nconst res = await client.query($input);\nawait client.end();\nreturn res.rows;"
+        }
+      }
+    },
+    {
+      "id": "customTool_2",
+      "data": {
+        "id": "customTool_2",
+        "label": "Email Tool",
+        "name": "customTool",
+        "type": "CustomTool",
+        "category": "Tools",
+        "inputs": {
+          "toolName": "send_email",
+          "toolDesc": "Send an email via SMTP",
+          "javascriptFunction": "const nodemailer = require('nodemailer');\nconst transporter = nodemailer.createTransport({ host: 'https://smtp.company.com', auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD } });\nawait transporter.sendMail({ to: $input.to, subject: $input.subject, text: $input.body });\nreturn 'sent';"
+        }
+      }
+    },
+    {
+      "id": "chatOpenAI_0",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "category": "Chat Models",
+        "inputs": {
+          "modelName": "gpt-4-turbo",
+          "temperature": "0.3"
+        }
+      }
+    },
+    {
+      "id": "toolAgent_0",
+      "data": {
+        "id": "toolAgent_0",
+        "label": "Tool Agent",
+        "name": "toolAgent",
+        "type": "ToolAgent",
+        "category": "Agents",
+        "inputs": {}
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "customTool_0",
+      "target": "toolAgent_0"
+    },
+    {
+      "source": "customTool_1",
+      "target": "toolAgent_0"
+    },
+    {
+      "source": "customTool_2",
+      "target": "toolAgent_0"
+    },
+    {
+      "source": "chatOpenAI_0",
+      "target": "toolAgent_0"
+    }
+  ]
+}

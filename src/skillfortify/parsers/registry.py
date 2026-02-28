@@ -29,13 +29,29 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from skillfortify.parsers.agno_tools import AgnoParser
+from skillfortify.parsers.anthropic_sdk import AnthropicSDKParser
 from skillfortify.parsers.autogen import AutoGenParser
 from skillfortify.parsers.base import ParsedSkill, SkillParser
+from skillfortify.parsers.camel_tools import CamelAIParser
 from skillfortify.parsers.claude_skills import ClaudeSkillsParser
+from skillfortify.parsers.composio_tools import ComposioParser
 from skillfortify.parsers.crewai import CrewAIParser
+from skillfortify.parsers.dify_plugin import DifyPluginParser
+from skillfortify.parsers.flowise_flow import FlowiseParser
+from skillfortify.parsers.google_adk import GoogleADKParser
+from skillfortify.parsers.haystack_tools import HaystackParser
 from skillfortify.parsers.langchain import LangChainParser
+from skillfortify.parsers.llamaindex_tools import LlamaIndexParser
+from skillfortify.parsers.mastra_tools import MastraParser
 from skillfortify.parsers.mcp_config import McpConfigParser
+from skillfortify.parsers.mcp_server import McpServerParser
+from skillfortify.parsers.metagpt_roles import MetaGPTParser
+from skillfortify.parsers.n8n_workflow import N8nWorkflowParser
+from skillfortify.parsers.openai_agents import OpenAIAgentsParser
 from skillfortify.parsers.openclaw import OpenClawParser
+from skillfortify.parsers.pydanticai_tools import PydanticAIParser
+from skillfortify.parsers.semantic_kernel import SemanticKernelParser
 
 
 class ParserRegistry:
@@ -88,22 +104,63 @@ class ParserRegistry:
 def default_registry() -> ParserRegistry:
     """Create a ParserRegistry pre-loaded with all built-in parsers.
 
-    The default registry includes:
-    1. ``ClaudeSkillsParser`` -- Claude Code skills (.claude/skills/*.md)
-    2. ``McpConfigParser`` -- MCP server configs (mcp.json, etc.)
-    3. ``OpenClawParser`` -- OpenClaw skills (.claw/*.yaml)
-    4. ``LangChainParser`` -- LangChain tools (BaseTool / @tool in .py)
-    5. ``CrewAIParser`` -- CrewAI tools (crew.yaml + BaseTool in .py)
-    6. ``AutoGenParser`` -- AutoGen tools (register_for_llm / schemas)
+    The default registry includes parsers for 22 agent frameworks:
+
+    P0 (Critical):
+    1. ClaudeSkillsParser -- Claude Code skills (.claude/skills/*.md)
+    2. McpConfigParser -- MCP server configs (mcp.json, etc.)
+    3. McpServerParser -- MCP server source code (deep analysis)
+    4. OpenClawParser -- OpenClaw skills (.claw/*.yaml)
+    5. OpenAIAgentsParser -- OpenAI Agents SDK (@function_tool)
+    6. GoogleADKParser -- Google ADK (google.adk)
+
+    P1 (Major ecosystems):
+    7. LangChainParser -- LangChain tools (BaseTool / @tool)
+    8. CrewAIParser -- CrewAI tools (crew.yaml)
+    9. AutoGenParser -- AutoGen tools (register_for_llm)
+    10. DifyPluginParser -- Dify plugins (manifest.yaml)
+    11. ComposioParser -- Composio (Action / App / @action)
+    12. SemanticKernelParser -- Microsoft Semantic Kernel
+    13. LlamaIndexParser -- LlamaIndex (FunctionTool / ReActAgent)
+
+    P2 (Full coverage):
+    14. N8nWorkflowParser -- n8n workflows (JSON)
+    15. FlowiseParser -- Flowise chatflows (JSON)
+    16. MastraParser -- Mastra tools (TypeScript)
+    17. PydanticAIParser -- PydanticAI (@agent.tool)
+    18. AgnoParser -- Agno/Phidata agents
+    19. CamelAIParser -- CAMEL-AI (ChatAgent / RolePlaying)
+    20. MetaGPTParser -- MetaGPT (Role / Action)
+    21. HaystackParser -- Haystack pipelines
+    22. AnthropicSDKParser -- Anthropic Agent SDK
 
     Returns:
-        A ParserRegistry with all six built-in parsers registered.
+        A ParserRegistry with all 22 built-in parsers registered.
     """
     registry = ParserRegistry()
+    # P0: Critical path
     registry.register(ClaudeSkillsParser())
     registry.register(McpConfigParser())
+    registry.register(McpServerParser())
     registry.register(OpenClawParser())
+    registry.register(OpenAIAgentsParser())
+    registry.register(GoogleADKParser())
+    # P1: Major ecosystems
     registry.register(LangChainParser())
     registry.register(CrewAIParser())
     registry.register(AutoGenParser())
+    registry.register(DifyPluginParser())
+    registry.register(ComposioParser())
+    registry.register(SemanticKernelParser())
+    registry.register(LlamaIndexParser())
+    # P2: Full coverage
+    registry.register(N8nWorkflowParser())
+    registry.register(FlowiseParser())
+    registry.register(MastraParser())
+    registry.register(PydanticAIParser())
+    registry.register(AgnoParser())
+    registry.register(CamelAIParser())
+    registry.register(MetaGPTParser())
+    registry.register(HaystackParser())
+    registry.register(AnthropicSDKParser())
     return registry

@@ -1,6 +1,6 @@
 # SkillFortify
 
-> Formal analysis and supply chain security for agentic AI skills.
+> Supply chain security scanner for AI agent skills -- supports 22 frameworks.
 
 [![PyPI version](https://img.shields.io/pypi/v/skillfortify.svg)](https://pypi.org/project/skillfortify/)
 [![Tests](https://img.shields.io/github/actions/workflow/status/varun369/skillfortify/ci.yml?label=tests)](https://github.com/varun369/skillfortify/actions)
@@ -9,157 +9,151 @@
 
 ---
 
-## The Problem
+## One Command. Every Framework.
 
-In January 2026, the ClawHavoc campaign infiltrated 1,200+ malicious skills into agent marketplaces. A month later, researchers catalogued 6,487 malicious agent tools -- and showed that conventional virus scanners miss the vast majority of them. CVE-2026-25253 demonstrated remote code execution through a single compromised skill.
+```bash
+pip install skillfortify
+skillfortify scan                # Auto-discovers all AI tools on your system
+skillfortify scan ./my-project   # Scan a specific project
+skillfortify dashboard           # Generate HTML security report
+```
 
-Every existing defense tool relies on heuristic pattern matching: YARA rules, LLM-as-judge scoring, or regex-based scanning. They are better than nothing, but they share a fundamental limitation: **absence of findings does not mean absence of risk.** A sophisticated attacker can evade every heuristic scanner on the market today.
+SkillFortify formally analyzes agent skill safety using sound static analysis. If SkillFortify reports no violations, the capability bounds in the formal model are assured. Unlike heuristic scanners where absence of findings does not mean absence of risk, SkillFortify provides mathematically grounded security guarantees.
 
-SkillFortify takes a different approach. Instead of guessing whether a skill is safe, SkillFortify formally analyzes skill safety using sound static analysis -- if SkillFortify reports no violations, the capability bounds in the formal model are assured. Using formal verification techniques adapted from supply chain security research, SkillFortify constructs a mathematical model of what each skill can and cannot do -- and verifies that model against declared capabilities. Zero false positives on the benchmark suite. The same rigor that protects critical infrastructure, applied to the agent skill ecosystem.
+---
+
+## Supported Frameworks (22)
+
+| # | Framework | Detection |
+|---|-----------|-----------|
+| 1 | **Claude Code Skills** | `.claude/` directory |
+| 2 | **MCP Servers** | `mcp.json`, `mcp_config.json`, deep server scan |
+| 3 | **OpenClaw Skills** | `.claw/` directory |
+| 4 | **LangChain Tools** | `langchain` imports, `BaseTool`, `@tool` |
+| 5 | **CrewAI Tools** | `crew.yaml`, `crewai` imports |
+| 6 | **AutoGen Tools** | `autogen` imports, `register_for_llm` |
+| 7 | **OpenAI Agents SDK** | `openai-agents` configurations |
+| 8 | **Google ADK** | `google-adk` configurations |
+| 9 | **Dify** | Dify workflow and plugin definitions |
+| 10 | **Composio** | Composio tool integrations |
+| 11 | **Semantic Kernel** | Microsoft Semantic Kernel plugins |
+| 12 | **LlamaIndex** | LlamaIndex tool abstractions |
+| 13 | **n8n** | n8n workflow node definitions |
+| 14 | **Flowise** | Flowise chatflow configurations |
+| 15 | **Mastra** | Mastra agent tool definitions |
+| 16 | **PydanticAI** | PydanticAI tool decorators |
+| 17 | **Agno** | Agno agent configurations |
+| 18 | **CAMEL-AI** | CAMEL-AI tool integrations |
+| 19 | **MetaGPT** | MetaGPT action and tool definitions |
+| 20 | **Haystack** | Haystack component definitions |
+| 21 | **Anthropic Agent SDK** | Anthropic agent tool configurations |
+| 22 | **Custom Skills** | User-defined skill manifests (YAML/JSON) |
+
+All frameworks are parsed into a unified representation for consistent analysis, trust scoring, and SBOM generation.
 
 ---
 
 ## Quick Start
 
+### Install
+
 ```bash
-pip install skillfortify
+pip install skillfortify                 # Core scanner
+pip install skillfortify[registry]       # + marketplace scanning
+pip install skillfortify[all]            # Everything
 ```
 
-Scan your agent project for security issues:
+### System-Wide Scan
+
+Run `skillfortify scan` with no arguments to automatically discover every AI agent tool installed on your system -- Claude Code, Cursor, VS Code extensions, Windsurf, and more:
+
+```bash
+skillfortify scan
+```
+
+```
+Discovering AI tools on this system...
+  Found: Claude Code skills       (12 skills in ~/.claude/skills/)
+  Found: MCP servers              (8 servers in ~/.cursor/mcp.json)
+  Found: VS Code MCP configs      (3 servers in ~/.vscode/mcp.json)
+  Found: Windsurf MCP configs     (2 servers)
+
+Scanning 25 skills across 4 locations...
+
++----------------------+--------+-----------+----------+--------------+
+|       Skill          | Source |  Status   | Findings | Max Severity |
++----------------------+--------+-----------+----------+--------------+
+| deploy-automation    | Claude |   SAFE    |        0 | -            |
+| data-export          | Claude |  UNSAFE   |        2 | HIGH         |
+| postgres-server      | MCP    |   SAFE    |        0 | -            |
+| file-manager         | MCP    |  WARNING  |        1 | MEDIUM       |
++----------------------+--------+-----------+----------+--------------+
+25 skills scanned | 22 safe | 2 unsafe | 1 warning | 5 total findings
+```
+
+### Project Scan
 
 ```bash
 skillfortify scan ./my-agent-project
+skillfortify scan ./my-agent-project --format json
+skillfortify scan ./my-agent-project --severity-threshold high
 ```
 
+### HTML Dashboard
+
+Generate a standalone HTML security report with interactive filtering, a capabilities matrix, and severity breakdown:
+
+```bash
+skillfortify dashboard
+skillfortify dashboard --output security-report.html
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                      SkillFortify Scan Results                        │
-├──────────────────────┬────────┬────────┬──────────┬─────────────┤
-│ Skill                │ Format │ Status │ Findings │ Max Severity│
-├──────────────────────┼────────┼────────┼──────────┼─────────────┤
-│ deploy-automation    │ -      │  SAFE  │        0 │ -           │
-│ data-export          │ -      │ UNSAFE │        2 │ HIGH        │
-│ weather-lookup       │ -      │  SAFE  │        0 │ -           │
-└──────────────────────┴────────┴────────┴──────────┴─────────────┘
-3 skills scanned | 2 safe | 1 unsafe | 2 total findings
-```
+
+Open the generated file in any browser -- no server or dependencies required.
 
 ---
 
-## What SkillFortify Does
+## Features
 
-### `skillfortify scan <path>` -- Discover and analyze skills
-
-Auto-detects all agent skills in your project directory across supported formats. Runs formal static analysis and reports security findings ranked by severity.
-
-```bash
-skillfortify scan . --format json              # Machine-readable output
-skillfortify scan . --severity-threshold high  # Only show HIGH and CRITICAL
-```
-
-### `skillfortify verify <skill>` -- Formal verification of a single skill
-
-Deep analysis of one skill file with full capability inference, including POLA (Principle of Least Authority) compliance checks.
-
-```bash
-skillfortify verify .claude/skills/deploy.md
-```
-
-```
-┌───────────────────────────────────────────────────────┐
-│ Skill: deploy-automation   Status: SAFE               │
-├───────────────────────────────────────────────────────┤
-│                  Inferred Capabilities                 │
-├───────────────────────┬───────────────────────────────┤
-│ Resource              │ Access Level                  │
-├───────────────────────┼───────────────────────────────┤
-│ filesystem            │ READ                          │
-│ network               │ READ                          │
-└───────────────────────┴───────────────────────────────┘
-No findings. Skill passed all checks.
-```
-
-### `skillfortify lock <path>` -- Generate skill-lock.json
-
-Creates a deterministic lockfile pinning every skill to its exact version and content hash. Guarantees reproducible agent configurations across environments -- the same way package lockfiles work for traditional dependencies.
-
-```bash
-skillfortify lock ./my-agent-project
-skillfortify lock ./my-agent-project -o custom-lock.json
-```
-
-### `skillfortify trust <skill>` -- Trust score computation
-
-Computes a multi-signal trust score combining provenance, behavioral analysis, community signals, and historical record. Maps to graduated trust levels inspired by the SLSA framework.
-
-```bash
-skillfortify trust .claude/skills/deploy.md
-```
-
-```
-┌───────────────────────────────────────────────────────┐
-│ Skill: deploy-automation   Version: 1.0.0             │
-├───────────────────────────────────────────────────────┤
-│   Intrinsic Score: 0.750                              │
-│   Effective Score: 0.750                              │
-│   Trust Level:     FORMALLY_VERIFIED                  │
-├───────────────────────────────────────────────────────┤
-│                   Signal Breakdown                     │
-├───────────────────────┬───────────────────────────────┤
-│ Provenance            │ 0.500                         │
-│ Behavioral            │ 1.000                         │
-│ Community             │ 0.500                         │
-│ Historical            │ 0.500                         │
-└───────────────────────┴───────────────────────────────┘
-```
-
-### `skillfortify sbom <path>` -- CycloneDX ASBOM generation
-
-Generates a CycloneDX 1.6 Agent Skill Bill of Materials (ASBOM) for compliance reporting and audit trails. Includes skill inventory, capability declarations, trust scores, and security findings.
-
-```bash
-skillfortify sbom ./my-agent-project
-skillfortify sbom ./my-agent-project --project-name "prod-agent" --project-version "2.1.0"
-```
+- **Formal threat model (DY-Skill)** -- mathematically grounded attack taxonomy for the agent skill supply chain
+- **Sound static analysis** -- formal capability verification, not heuristic pattern matching
+- **Capability-based access control** -- POLA compliance checks for every skill
+- **Agent Dependency Graph** -- constraint-based resolution with conflict detection
+- **Lockfile generation** -- deterministic `skill-lock.json` for reproducible agent configurations
+- **Trust score algebra** -- multi-signal trust with propagation through dependency chains
+- **ASBOM generation** -- CycloneDX 1.6 Agent Skill Bill of Materials for compliance reporting
+- **Registry scanning** -- scan MCP registries, PyPI, and npm for known vulnerabilities
+- **HTML dashboard** -- standalone interactive security report
+- **System auto-discovery** -- finds every AI tool on your machine automatically
+- **22 framework support** -- broadest coverage of any agent security scanner
 
 ---
 
-## How It's Different
+## CLI Commands
 
-| Feature | SkillFortify | Heuristic Scanners |
-|---------|--------|--------------------|
-| **Verification approach** | Formal static analysis with sound capability model | Pattern matching, YARA rules, LLM judges |
-| **False positive rate** | 0% on benchmark suite | Variable, often high |
-| **Guarantee semantics** | Formal bounds on skill capabilities | "No findings" != "no risk" |
-| **Dependency resolution** | Constraint-based resolution | Not available |
-| **Lockfile generation** | Deterministic `skill-lock.json` | Not available |
-| **Trust scoring** | Multi-signal algebraic model | Not available |
-| **SBOM generation** | CycloneDX 1.6 ASBOM | Not available |
-| **Capability inference** | Formal capability model | Ad-hoc |
-| **Reproducible configs** | Integrity-verified lockfiles | Not available |
+| Command | Description |
+|---------|-------------|
+| `skillfortify scan [path]` | Discover and analyze skills. No path = system-wide scan |
+| `skillfortify verify <skill>` | Deep formal verification of a single skill file |
+| `skillfortify lock <path>` | Generate deterministic `skill-lock.json` lockfile |
+| `skillfortify trust <skill>` | Compute multi-signal trust score with graduated levels |
+| `skillfortify sbom <path>` | Generate CycloneDX 1.6 ASBOM for compliance |
+| `skillfortify frameworks` | List all 22 supported frameworks and detection methods |
+| `skillfortify dashboard` | Generate standalone HTML security report |
+| `skillfortify registry-scan <source>` | Scan MCP, PyPI, or npm registries for threats |
 
----
+### Exit Codes
 
-## Supported Formats
-
-SkillFortify auto-detects and analyzes skills across six major agent frameworks:
-
-| Format | Detected From | Skill Location |
-|--------|---------------|----------------|
-| **Claude Code Skills** | `.claude/` directory | `.claude/skills/*.md` |
-| **MCP Servers** | `mcp.json` or `mcp_config.json` | Server configurations |
-| **OpenClaw Skills** | `.claw/` directory | `.claw/**/*` |
-| **LangChain Tools** | `langchain` imports in `.py` | `BaseTool` subclasses, `@tool` decorators |
-| **CrewAI Tools** | `crew.yaml` or `crewai` imports | Crew definitions + tool classes |
-| **AutoGen Tools** | `autogen` imports in `.py` | `register_for_llm` decorators, function schemas |
-
-All formats are parsed into a unified representation for consistent analysis, trust scoring, and SBOM generation.
+| Code | Meaning |
+|------|---------|
+| `0` | All checks passed |
+| `1` | Security findings detected |
+| `2` | No skills found or parse error |
 
 ---
 
 ## Benchmark Results
 
-Evaluated on SkillFortifyBench -- a curated dataset of 540 agent skills (clean and malicious samples sourced from documented real-world incidents):
+Evaluated on SkillFortifyBench -- 540 agent skills (clean and malicious samples from documented real-world incidents):
 
 | Metric | Value |
 |--------|-------|
@@ -168,7 +162,18 @@ Evaluated on SkillFortifyBench -- a curated dataset of 540 agent skills (clean a
 | F1 Score | **96.95%** |
 | Average scan time | 2.55 ms per skill |
 
-Zero false positives on the benchmark suite means SkillFortify did not flag any safe skill as malicious across 540 test cases. When it reports a skill as unsafe, that finding is backed by formal analysis of the skill's capability bounds, not a heuristic guess.
+---
+
+## Trust Levels
+
+Graduated trust levels inspired by the SLSA framework:
+
+| Level | Threshold | Meaning |
+|-------|-----------|---------|
+| **FORMALLY_VERIFIED** | >= 0.75 | Highest assurance. Formal analysis passed, strong provenance |
+| **COMMUNITY_VERIFIED** | >= 0.50 | Community reviewed, usage history, behavioral checks passed |
+| **SIGNED** | >= 0.25 | Basic provenance. Author signed, limited verification |
+| **UNSIGNED** | < 0.25 | No verification. Treat with extreme caution |
 
 ---
 
@@ -185,62 +190,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Install SkillFortify
-        run: pip install skillfortify
-
-      - name: Scan agent skills
-        run: skillfortify scan . --format json
-
-      - name: Verify lockfile integrity
-        run: skillfortify lock . --output /tmp/fresh-lock.json
+      - run: pip install skillfortify
+      - run: skillfortify scan . --format json
+      - run: skillfortify lock . --output /tmp/fresh-lock.json
 ```
-
-### Exit Codes
-
-All SkillFortify commands use consistent exit codes for CI/CD integration:
-
-| Code | Meaning |
-|------|---------|
-| `0` | Success -- all checks passed |
-| `1` | Findings detected -- one or more skills have security issues |
-| `2` | No skills found or parse error |
-
----
-
-## Trust Levels
-
-SkillFortify assigns graduated trust levels to every skill, inspired by the SLSA framework for software supply chain integrity:
-
-| Level | Threshold | Meaning |
-|-------|-----------|---------|
-| **FORMALLY_VERIFIED** | >= 0.75 | Highest assurance. Formal analysis passed, strong provenance, active community trust |
-| **COMMUNITY_VERIFIED** | >= 0.50 | Multiple positive signals. Community reviewed, usage history, basic behavioral checks |
-| **SIGNED** | >= 0.25 | Basic provenance established. Author signed, but limited community verification |
-| **UNSIGNED** | < 0.25 | No verification. Treat with extreme caution |
-
----
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [Getting Started](docs/getting-started.md) | Installation, first scan, and walkthrough |
-| [CLI Reference](docs/commands.md) | Complete command documentation |
-| [Lockfile Format](docs/skill-lock-json.md) | `skill-lock.json` specification |
-| [ASBOM Output](docs/asbom.md) | CycloneDX ASBOM format and compliance |
 
 ---
 
 ## Requirements
 
 - Python 3.11 or later
-- No external services required -- SkillFortify runs entirely offline
+- No external services required -- runs entirely offline
 - Works on Linux, macOS, and Windows
 
 ---
@@ -249,22 +212,26 @@ SkillFortify assigns graduated trust levels to every skill, inspired by the SLSA
 
 **"Formal Analysis and Supply Chain Security for Agentic AI Skills"**
 
-SkillFortify is backed by peer-reviewed research with five formal theorems and full proofs, formalizing the agent skill supply chain threat model, capability verification, trust algebra, and dependency resolution.
+Backed by peer-reviewed research with five formal theorems and full proofs, formalizing the agent skill supply chain threat model, capability verification, trust algebra, and dependency resolution.
 
-**[Read the paper on Zenodo →](https://doi.org/10.5281/zenodo.18787663)** | DOI: 10.5281/zenodo.18787663
+**[Read the paper on Zenodo](https://doi.org/10.5281/zenodo.18787663)** | DOI: 10.5281/zenodo.18787663
 
-Part of the **AgentAssert** suite ([arXiv:2602.22302](https://arxiv.org/abs/2602.22302)) — building the formal foundations for trustworthy AI agents.
+Part of the **AgentAssert** suite ([arXiv:2602.22302](https://arxiv.org/abs/2602.22302)) -- formal foundations for trustworthy AI agents.
+
+---
+
+## Contributing
+
+Contributions welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup instructions, coding standards, and submission guidelines.
 
 ---
 
 ## Author
 
-**Varun Pratap Bhardwaj** — Solution Architect with 15+ years in enterprise technology. Dual qualifications in technology and law (LL.B.), with a focus on formal methods for AI safety and regulatory compliance for autonomous systems.
+**Varun Pratap Bhardwaj** -- Solution Architect with 15+ years in enterprise technology. Dual qualifications in technology and law (LL.B.), with a focus on formal methods for AI safety.
 
-- **Research:** Formal methods for AI agent safety, behavioral contracts, supply chain security
-- **Prior work:** [AgentAssert](https://arxiv.org/abs/2602.22302) (design-by-contract for AI agents, [Zenodo](https://zenodo.org/records/18775393)), SuperLocalMemory (privacy-preserving agent memory)
-- **Contact:** varun.pratap.bhardwaj@gmail.com
 - **ORCID:** [0009-0002-8726-4289](https://orcid.org/0009-0002-8726-4289)
+- **Contact:** varun.pratap.bhardwaj@gmail.com
 
 ---
 
@@ -276,12 +243,11 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ## Citation
 
-If you use SkillFortify in your research, please cite:
-
 ```bibtex
 @software{bhardwaj2026skillfortify,
   author    = {Bhardwaj, Varun Pratap},
-  title     = {SkillFortify: Formal Analysis and Supply Chain Security for Agentic AI Skills},
+  title     = {SkillFortify: Formal Analysis and Supply Chain Security
+               for Agentic AI Skills},
   year      = {2026},
   doi       = {10.5281/zenodo.18787663},
   publisher = {Zenodo},

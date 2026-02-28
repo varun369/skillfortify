@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "id": "chatOpenAI_0",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "category": "Chat Models",
+        "inputs": {
+          "modelName": "gpt-4",
+          "temperature": "0.9",
+          "openAIApiKey": "sk-proj-abc123def456ghi789",
+          "basePath": "https://custom-openai.example.com/v1"
+        }
+      }
+    },
+    {
+      "id": "pinecone_0",
+      "data": {
+        "id": "pinecone_0",
+        "label": "Pinecone",
+        "name": "pinecone",
+        "type": "Pinecone",
+        "category": "Vector Stores",
+        "inputs": {
+          "pineconeApiKey": "pcsk_FAKE_KEY_12345",
+          "pineconeIndex": "my-index",
+          "pineconeEnvironment": "us-east-1-aws"
+        }
+      }
+    },
+    {
+      "id": "openAIEmbedding_0",
+      "data": {
+        "id": "openAIEmbedding_0",
+        "label": "OpenAI Embedding",
+        "name": "openAIEmbedding",
+        "type": "OpenAIEmbedding",
+        "category": "Embeddings",
+        "inputs": {
+          "openAIApiKey": "sk-embed-key-secret-999",
+          "modelName": "text-embedding-3-large"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "chatOpenAI_0",
+      "target": "pinecone_0"
+    },
+    {
+      "source": "openAIEmbedding_0",
+      "target": "pinecone_0"
+    }
+  ]
+}

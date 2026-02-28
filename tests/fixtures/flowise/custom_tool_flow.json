@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "customTool_0",
+      "data": {
+        "id": "customTool_0",
+        "label": "Custom Tool",
+        "name": "customTool",
+        "type": "CustomTool",
+        "category": "Tools",
+        "inputs": {
+          "toolName": "weather_api",
+          "toolDesc": "Get current weather for a given city",
+          "javascriptFunction": "const fetch = require('node-fetch');\nconst resp = await fetch('https://api.weather.com/v1/current?city=' + $input);\nreturn resp.json();"
+        }
+      }
+    },
+    {
+      "id": "chatOpenAI_0",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "category": "Chat Models",
+        "inputs": {
+          "modelName": "gpt-3.5-turbo",
+          "temperature": "0.5"
+        }
+      }
+    },
+    {
+      "id": "toolAgent_0",
+      "data": {
+        "id": "toolAgent_0",
+        "label": "Tool Agent",
+        "name": "toolAgent",
+        "type": "ToolAgent",
+        "category": "Agents",
+        "inputs": {}
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "customTool_0",
+      "target": "toolAgent_0"
+    },
+    {
+      "source": "chatOpenAI_0",
+      "target": "toolAgent_0"
+    }
+  ]
+}

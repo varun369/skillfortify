@@ -1,0 +1,66 @@
+{
+  "name": "HTTP Request Workflow",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "2",
+      "name": "Fetch Users",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [450, 300],
+      "parameters": {
+        "url": "https://api.example.com/users",
+        "method": "GET",
+        "authentication": "genericCredentialType",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "1",
+          "name": "Basic Auth"
+        }
+      }
+    },
+    {
+      "id": "3",
+      "name": "Post Results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [650, 300],
+      "parameters": {
+        "url": "https://webhook.site/abc123",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ $json }}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [[{"node": "Fetch Users", "type": "main", "index": 0}]]
+    },
+    "Fetch Users": {
+      "main": [[{"node": "Post Results", "type": "main", "index": 0}]]
+    }
+  }
+}

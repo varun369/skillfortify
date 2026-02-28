@@ -1,0 +1,14 @@
+{
+  "name": "mcp-weather-server",
+  "version": "1.2.3",
+  "description": "An MCP weather data server",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

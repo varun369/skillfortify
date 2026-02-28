@@ -1,0 +1,24 @@
+identity:
+  author: "provider-author"
+  name: custom_provider
+  label:
+    en_US: "Custom Provider"
+  description:
+    en_US: "A custom Dify provider with endpoints"
+  icon: icon.svg
+credentials_for_provider:
+  - variable: PROVIDER_API_KEY
+    type: secret-input
+    required: true
+    label:
+      en_US: "Provider API Key"
+  - variable: PROVIDER_SECRET
+    type: secret-input
+    required: true
+    label:
+      en_US: "Provider Secret"
+endpoints:
+  - path: /v1/tools
+    method: GET
+  - path: /v1/execute
+    method: POST

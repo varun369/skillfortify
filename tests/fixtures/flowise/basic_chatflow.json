@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "chatOpenAI_0",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "category": "Chat Models",
+        "inputs": {
+          "modelName": "gpt-4",
+          "temperature": "0.7",
+          "maxTokens": "2000"
+        }
+      }
+    },
+    {
+      "id": "bufferMemory_0",
+      "data": {
+        "id": "bufferMemory_0",
+        "label": "Buffer Memory",
+        "name": "bufferMemory",
+        "type": "BufferMemory",
+        "category": "Memory",
+        "inputs": {}
+      }
+    },
+    {
+      "id": "conversationChain_0",
+      "data": {
+        "id": "conversationChain_0",
+        "label": "Conversation Chain",
+        "name": "conversationChain",
+        "type": "ConversationChain",
+        "category": "Chains",
+        "inputs": {
+          "systemMessage": "You are a helpful assistant."
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "chatOpenAI_0",
+      "target": "conversationChain_0",
+      "sourceHandle": "chatOpenAI_0-output-chatOpenAI-ChatOpenAI",
+      "targetHandle": "conversationChain_0-input-model-ChatOpenAI"
+    },
+    {
+      "source": "bufferMemory_0",
+      "target": "conversationChain_0",
+      "sourceHandle": "bufferMemory_0-output-bufferMemory-BufferMemory",
+      "targetHandle": "conversationChain_0-input-memory-BufferMemory"
+    }
+  ]
+}

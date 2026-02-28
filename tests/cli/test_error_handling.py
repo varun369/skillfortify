@@ -37,14 +37,21 @@ class TestScanErrorHandling:
         assert result.exit_code == 2
         assert "Error" in result.output or "does not exist" in result.output
 
-    def test_scan_no_arguments_shows_help(
+    def test_scan_no_arguments_runs_system_scan(
         self, runner: CliRunner
     ) -> None:
-        """scan with no arguments should display usage/help text."""
+        """scan with no arguments triggers system-wide auto-discovery.
+
+        Exit code 2 is expected when no AI tools/skills are found on the
+        system (which is the case in test environments). The key behavior
+        change: no longer shows "Missing argument" but instead attempts
+        a system scan.
+        """
         result = runner.invoke(cli, ["scan"])
-        assert result.exit_code == 2
-        # Click displays "Missing argument" when a required arg is absent.
-        assert "Missing argument" in result.output or "Usage" in result.output
+        # System scan runs; exit 2 if no skills found, 0 or 1 otherwise.
+        assert result.exit_code in (0, 1, 2)
+        # Should NOT show "Missing argument" (path is now optional).
+        assert "Missing argument" not in result.output
 
 
 class TestVerifyErrorHandling:

@@ -4,6 +4,18 @@ All notable changes to SkillFortify are documented here.
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-03-01
+
+### Added
+- Expanded framework support to cover all major agent ecosystems
+- System-wide scan mode for comprehensive security assessment
+- Interactive HTML security report with filtering and export
+- New CLI commands for framework listing and report generation
+- Marketplace security scanning capabilities
+
+### Changed
+- `skillfortify scan` now works without arguments for broader coverage
+
 ## [0.2.0] - 2026-02-26
 
 ### Added

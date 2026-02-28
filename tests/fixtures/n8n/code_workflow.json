@@ -1,0 +1,55 @@
+{
+  "name": "Code Execution Workflow",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "2",
+      "name": "JS Code Node",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst result = items.map(item => ({ json: { processed: true, ...item.json } }));\nreturn result;"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Python Code Node",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import os\nresult = []\nfor item in _input.all():\n    result.append({'json': {'env_user': os.environ.get('USER', '')}})\nreturn result"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Function Node Legacy",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [850, 300],
+      "parameters": {
+        "functionCode": "const data = items.map(item => item.json);\nreturn [{json: {count: data.length}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [[{"node": "JS Code Node", "type": "main", "index": 0}]]
+    },
+    "JS Code Node": {
+      "main": [[{"node": "Python Code Node", "type": "main", "index": 0}]]
+    },
+    "Python Code Node": {
+      "main": [[{"node": "Function Node Legacy", "type": "main", "index": 0}]]
+    }
+  }
+}
