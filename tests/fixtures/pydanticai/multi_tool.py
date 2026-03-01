@@ -30,5 +30,5 @@ def calculate(expression: str) -> float:
 @agent.tool_plain
 def read_file(path: str) -> str:
     """Read a file from disk."""
-    key = os.environ["FILE_SERVICE_TOKEN"]
+    os.environ["FILE_SERVICE_TOKEN"]
     return open(path).read()

@@ -15,8 +15,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any
 
-from skillfortify.core.analyzer.models import AnalysisResult, Finding, Severity
-from skillfortify.core.capabilities import AccessLevel, Capability, CapabilitySet
+from skillfortify.core.analyzer.models import AnalysisResult, Finding
 from skillfortify.parsers.base import ParsedSkill
 
 

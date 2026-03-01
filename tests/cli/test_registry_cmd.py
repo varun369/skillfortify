@@ -6,6 +6,7 @@ All scanner methods are mocked — no real HTTP calls.
 from __future__ import annotations
 
 import json
+from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -13,7 +14,7 @@ from click.testing import CliRunner
 
 from skillfortify.cli.main import cli
 from skillfortify.core.analyzer.models import AnalysisResult, Finding, Severity
-from skillfortify.registry.base import RegistryEntry, RegistryStats
+from skillfortify.registry.base import RegistryStats
 
 
 # ---------------------------------------------------------------------------
@@ -80,7 +81,7 @@ def _patch_scanner(registry_type: str, results: list, stats: RegistryStats) -> A
     }
 
     # We need to patch the import path within registry_cmd
-    target = f"skillfortify.registry.{_scanner_module(registry_type)}"
+    f"skillfortify.registry.{_scanner_module(registry_type)}"
     return patch(
         module_map.get(registry_type, module_map["mcp"]),
         return_value=mock_scanner,
@@ -175,7 +176,7 @@ class TestRegistryScanCommand:
     def test_limit_option(self, runner: CliRunner) -> None:
         """--limit option is accepted."""
         stats = _mock_stats()
-        with _patch_get_scanner([], stats) as mock:
+        with _patch_get_scanner([], stats):
             result = runner.invoke(
                 cli, ["registry-scan", "mcp", "--limit", "25"]
             )

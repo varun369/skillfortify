@@ -7,6 +7,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 
+**[Website](https://www.superlocalmemory.com/skillfortify)** | **[PyPI](https://pypi.org/project/skillfortify/)** | **[Paper (Zenodo)](https://doi.org/10.5281/zenodo.18787663)** | **[Wiki](https://github.com/varun369/skillfortify/wiki)**
+
 ---
 
 ## One Command. Every Framework.

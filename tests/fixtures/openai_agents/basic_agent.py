@@ -5,7 +5,7 @@ Used by test_openai_agents.py to verify extraction of:
 - Agent(...) instantiations with name, instructions, tools
 - URLs, imports, docstrings
 """
-from agents import Agent, Runner, function_tool
+from agents import Agent, function_tool
 import requests
 
 

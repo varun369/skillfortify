@@ -13,7 +13,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 
 from skillfortify.parsers.base import ParsedSkill
 from skillfortify.parsers.haystack_tools import (

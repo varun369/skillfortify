@@ -4,7 +4,6 @@ Fixture exercises multi-class extraction, kernel.add_plugin calls,
 and prompt template detection.
 """
 
-import os
 
 from semantic_kernel import Kernel
 from semantic_kernel.functions import kernel_function

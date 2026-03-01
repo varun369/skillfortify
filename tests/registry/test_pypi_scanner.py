@@ -12,7 +12,6 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from skillfortify.core.analyzer.models import Severity
 from skillfortify.registry.base import RegistryEntry
 from skillfortify.registry.pypi_scanner import (
     KNOWN_MALICIOUS_PACKAGES,

@@ -8,9 +8,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 
-from skillfortify.discovery.ide_registry import IDE_PROFILES, IDEProfile
+from skillfortify.discovery.ide_registry import IDE_PROFILES
 from skillfortify.discovery.models import DiscoveredIDE, SystemScanResult
 from skillfortify.discovery.system_scanner import SystemScanner
 

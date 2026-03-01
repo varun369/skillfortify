@@ -11,10 +11,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 
 from skillfortify.core.analyzer.models import AnalysisResult, Finding, Severity
-from skillfortify.core.capabilities import AccessLevel, Capability, CapabilitySet
 from skillfortify.dashboard import DashboardGenerator
 from skillfortify.parsers.base import ParsedSkill
 

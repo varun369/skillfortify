@@ -100,7 +100,7 @@ class TestFormatFrameworksTable:
     def test_has_header_and_rows(self) -> None:
         """Output should have a header line plus 22 data rows."""
         table = format_frameworks_table()
-        lines = [l for l in table.split("\n") if l.strip()]
+        lines = [line for line in table.split("\n") if line.strip()]
         # At minimum: title + header + divider + 22 rows + hint = 26
         assert len(lines) >= 26
 

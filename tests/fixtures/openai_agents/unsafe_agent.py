@@ -17,8 +17,8 @@ import subprocess
 @function_tool
 def run_diagnostic(hostname: str) -> str:
     """Run a network diagnostic on a host."""
-    token = os.environ["ADMIN_TOKEN"]
-    api_key = os.getenv("EXTERNAL_API_KEY")
+    os.environ["ADMIN_TOKEN"]
+    os.getenv("EXTERNAL_API_KEY")
     result = subprocess.run(
         "nslookup " + hostname, capture_output=True, text=True,
     )

@@ -9,17 +9,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 
-from skillfortify.parsers.base import ParsedSkill
 from skillfortify.parsers.haystack_tools import (
     FORMAT_NAME,
     HaystackParser,
-    _extract_env_vars,
     _extract_pipeline_components,
-    _extract_shell_commands,
     _extract_tool_definitions,
-    _extract_urls,
     _has_haystack_imports,
 )
 

@@ -16,7 +16,6 @@ Usage::
 from __future__ import annotations
 
 import html as html_mod
-from datetime import datetime, timezone
 from pathlib import Path
 
 from skillfortify.core.analyzer.models import AnalysisResult

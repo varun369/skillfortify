@@ -7,13 +7,10 @@ errors.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
-import pytest
 
-from skillfortify.discovery.ide_registry import IDE_PROFILES, IDEProfile
-from skillfortify.discovery.models import DiscoveredIDE
+from skillfortify.discovery.ide_registry import IDEProfile
 from skillfortify.discovery.system_scanner import SystemScanner
 
 from tests.discovery.helpers import (

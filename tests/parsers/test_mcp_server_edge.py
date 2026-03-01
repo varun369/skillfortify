@@ -12,7 +12,6 @@ from pathlib import Path
 
 import pytest
 
-from skillfortify.parsers.base import ParsedSkill
 from skillfortify.parsers.mcp_server import McpServerParser
 
 

@@ -8,12 +8,10 @@ JSON payload encoding. All functions must handle empty inputs gracefully.
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
-import pytest
 
 from skillfortify.core.analyzer.models import AnalysisResult, Finding, Severity
-from skillfortify.core.capabilities import AccessLevel, Capability, CapabilitySet
+from skillfortify.core.capabilities import CapabilitySet
 from skillfortify.dashboard.data_prep import (
     SUPPORTED_FRAMEWORKS,
     encode_dashboard_json,

@@ -8,7 +8,6 @@ handling for network failures.
 from __future__ import annotations
 
 import asyncio
-import json
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
@@ -17,7 +16,6 @@ import pytest
 from skillfortify.core.analyzer.models import Severity
 from skillfortify.registry.base import RegistryEntry
 from skillfortify.registry.mcp_registry import (
-    MCP_REGISTRY_API,
     MCPRegistryScanner,
     _parse_server_entry,
 )
@@ -274,7 +272,7 @@ class TestScanEntry:
             url="https://custom-host.com/server",
             description="",
         )
-        with _patch_fetch_text("") as mock_text:
+        with _patch_fetch_text(""):
             result = asyncio.run(scanner.scan_entry(entry))
         assert result.is_safe
 

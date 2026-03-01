@@ -30,5 +30,5 @@ def add_user_context(ctx: RunContext[MyDeps]) -> str:
 def query_database(ctx: RunContext[MyDeps], sql: str) -> str:
     """Execute a database query."""
     import os
-    password = os.getenv("DB_PASSWORD")
+    os.getenv("DB_PASSWORD")
     return f"Results from {ctx.deps.db_url}"

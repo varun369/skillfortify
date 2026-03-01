@@ -5,7 +5,6 @@ kernel.add_plugin registrations with external spec references.
 """
 
 from semantic_kernel import Kernel
-from semantic_kernel.connectors.openapi_plugin import OpenAPIPlugin
 
 kernel = Kernel()
 
