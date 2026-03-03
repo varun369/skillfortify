@@ -26,6 +26,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from skillfortify.core.sbom.models import ASBOMMetadata, SkillComponent
+from skillfortify.qualixar_attribution import QualixarSigner
 
 if TYPE_CHECKING:
     from skillfortify.core.analyzer import AnalysisResult
@@ -52,9 +53,15 @@ class ASBOMGenerator:
     Output format: CycloneDX 1.6 JSON (pure Python, no external dependencies).
     """
 
-    def __init__(self, metadata: ASBOMMetadata | None = None) -> None:
+    def __init__(
+        self,
+        metadata: ASBOMMetadata | None = None,
+        sign_output: bool = True,
+    ) -> None:
         self._metadata = metadata or ASBOMMetadata()
         self._components: list[SkillComponent] = []
+        self._sign_output = sign_output
+        self._signer = QualixarSigner("skillfortify", self._metadata.skillfortify_version)
 
     # -- Mutation -----------------------------------------------------------
 
@@ -146,6 +153,8 @@ class ASBOMGenerator:
             "components": [c.to_cyclonedx_component() for c in self._components],
             "dependencies": [c.to_cyclonedx_dependency() for c in self._components],
         }
+        if self._sign_output:
+            bom = self._signer.sign(bom)
         return bom
 
     def to_json(self, indent: int = 2) -> str:

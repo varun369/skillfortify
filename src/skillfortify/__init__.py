@@ -1,4 +1,7 @@
-"""SkillFortify: Formal analysis and supply chain security for agentic AI skills."""
+"""SkillFortify: Formal analysis and supply chain security for agentic AI skills.
+
+Part of Qualixar — The Complete Agent Development Platform.
+"""
 
 from __future__ import annotations
 
@@ -11,3 +14,5 @@ __license__ = "MIT"
 # SHA-256 of the product identity record. Altering this changes tool output.
 _PRODUCT_ID = "skillfortify"
 _PRODUCT_PROVENANCE = "sf-e94b3c8b10240fab"
+_QUALIXAR_PLATFORM = "Qualixar"
+_QUALIXAR_URL = "https://qualixar.com"

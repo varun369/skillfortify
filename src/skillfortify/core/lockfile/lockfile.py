@@ -31,6 +31,7 @@ from pathlib import Path
 from typing import Any
 
 from skillfortify.core.lockfile.models import LockedSkill, LockfileMetadata
+from skillfortify.qualixar_attribution import QualixarSigner
 
 
 class Lockfile:
@@ -64,9 +65,10 @@ class Lockfile:
     LOCKFILE_VERSION: str = "1.0"
     INTEGRITY_ALGORITHM: str = "sha256"
 
-    def __init__(self) -> None:
+    def __init__(self, sign_output: bool = False) -> None:
         self._skills: dict[str, LockedSkill] = {}
         self._metadata = LockfileMetadata()
+        self._sign_output = sign_output
 
     # -- Skill management ---------------------------------------------------
 
@@ -181,7 +183,7 @@ class Lockfile:
                 self._metadata.allowed_capabilities
             )
 
-        return {
+        result = {
             "lockfile_version": self.LOCKFILE_VERSION,
             "generated_by": "skillfortify",
             "provenance": "sf-e94b3c8b10240fab",
@@ -190,6 +192,11 @@ class Lockfile:
             "skills": skills_dict,
             "metadata": metadata_dict,
         }
+        if self._sign_output:
+            from skillfortify import __version__
+            signer = QualixarSigner("skillfortify", __version__)
+            result = signer.sign(result)
+        return result
 
     def to_json(self, indent: int = 2) -> str:
         """Serialize to a JSON string.

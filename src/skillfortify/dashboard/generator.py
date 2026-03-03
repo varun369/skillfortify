@@ -24,6 +24,7 @@ from skillfortify.dashboard.scripts import DASHBOARD_JS
 from skillfortify.dashboard.styles import DASHBOARD_CSS
 from skillfortify.dashboard.template import DASHBOARD_HTML
 from skillfortify.parsers.base import ParsedSkill
+from skillfortify.qualixar_watermark import encode_watermark
 
 
 class DashboardGenerator:
@@ -40,8 +41,13 @@ class DashboardGenerator:
         title: Report title shown in the header and ``<title>`` tag.
     """
 
-    def __init__(self, title: str = "SkillFortify Security Report") -> None:
+    def __init__(
+        self,
+        title: str = "SkillFortify Security Report",
+        watermark: bool = True,
+    ) -> None:
         self.title = title
+        self._watermark = watermark
 
     # ------------------------------------------------------------------
     # Public API
@@ -73,6 +79,9 @@ class DashboardGenerator:
         html = html.replace("{{CSS}}", DASHBOARD_CSS)
         html = html.replace("{{DATA}}", json_payload)
         html = html.replace("{{JS}}", DASHBOARD_JS)
+
+        if self._watermark:
+            html = encode_watermark(html, "skillfortify")
 
         return html
 
