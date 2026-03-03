@@ -117,7 +117,7 @@ Run `skillfortify frameworks` for the full list with detection patterns.
 |----------|-----|
 | **GitHub Repository** | [github.com/varun369/skillfortify](https://github.com/varun369/skillfortify) |
 | **PyPI Package** | [pypi.org/project/skillfortify](https://pypi.org/project/skillfortify/) |
-| **Research Paper** | [Zenodo](https://doi.org/10.5281/zenodo.18787663) (DOI: 10.5281/zenodo.18787663) |
+| **Research Paper** | [arXiv:2603.00195](https://arxiv.org/abs/2603.00195) \| [Zenodo](https://doi.org/10.5281/zenodo.18787663) |
 | **AgentAssert Paper** | [arXiv:2602.22302](https://arxiv.org/abs/2602.22302) |
 | **AgentAssert Suite** | [agentassert.com](https://agentassert.com) |
 
@@ -128,13 +128,12 @@ Run `skillfortify frameworks` for the full list with detection patterns.
 If you use SkillFortify in your research, please cite:
 
 ```bibtex
-@software{bhardwaj2026skillfortify,
+@article{bhardwaj2026skillfortify,
   author    = {Bhardwaj, Varun Pratap},
-  title     = {SkillFortify: Formal Analysis and Supply Chain Security
-               for Agentic AI Skills},
+  title     = {Formal Analysis and Supply Chain Security for Agentic AI Skills},
+  journal   = {arXiv preprint arXiv:2603.00195},
   year      = {2026},
-  publisher = {GitHub},
-  url       = {https://github.com/varun369/skillfortify}
+  url       = {https://arxiv.org/abs/2603.00195}
 }
 ```
 
